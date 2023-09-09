@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GUVI | Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="wrapper d-flex align-items-stretch d-none" id="container">
+      <nav id="sidebar">
+        <div class="custom-menu d-lg-none">
+          <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars"></i>
+            <span class="sr-only">Toggle Menu</span>
+          </button>
+        </div>
+        <h1><a href="#" class="logo">Hello User</a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="#"><span class="fa fa-home mr-3"></span> Homepage</a>
+          </li>
+          <li>
+            <span class="sidebar-link" id="logout" style="cursor: pointer"
+              ><span class="fa fa-user mr-3"></span> Logout</span
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+        <form id="info-form">
+          <h2>Personal Info</h2>
+          <div class="form-group row">
+            <label for="name" class="col-sm-3 control-label col-form-label"
+              >Name</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Name"
+                name="name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="phone" class="col-sm-3 control-label col-form-label"
+              >Contact No</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="phone"
+                placeholder="Contact No"
+                name="phone"
+              />
+            </div>
+            <div class="form-group row"></div>
+            <label for="username" class="col-sm-3 control-label col-form-label"
+              >Email</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="email"
+                class="form-control"
+                id="username"
+                placeholder="Email"
+                name="username"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date" class="col-sm-3 control-label col-form-label"
+              >Date of Birth</label
+            >
+            <div class="col-sm-3">
+              <input type="date" class="form-control" id="date" name="dob" />
+            </div>
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container"></div>
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!--===============================================================================================-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      (function ($) {
+        "use strict";
+
+        var fullHeight = function () {
+          $(".js-fullheight").css("height", $(window).height());
+          $(window).resize(function () {
+            $(".js-fullheight").css("height", $(window).height());
+          });
+        };
+        fullHeight();
+
+        $("#sidebarCollapse").on("click", function () {
+          $("#sidebar").toggleClass("active");
+        });
+      })(jQuery);
+    </script>
+    <script>
+      $.ajax({
+        url: "php/profile.php",
+        type: "GET",
+        success: function ({ success, data }) {
+          if (success) {
+            $("#container").removeClass("d-none");
+            // fill form with data
+
+            $("#name").val(data["name"]);
+            $("#phone").val(data["phone"]);
+            $("#username").val(data["username"]);
+            if (data["dob"] == null) {
+              // set current locale date
+              var today = new Date();
+              var dd = String(today.getDate()).padStart(2, "0");
+              var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+              var yyyy = today.getFullYear();
+
+              today = yyyy + "-" + mm + "-" + dd;
+              $("#date").val(today);
+            } else $("#date").val(data["dob"]);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log(xhr, status, error);
+          if (xhr.status === 401) {
+            // Redirect to login page if authentication is required
+            window.location.href = "index.html";
+          } else {
+            // Handle other errors
+          }
+        },
+      });
+
+      $("#info-form").submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+          type: "PUT",
+          url: "php/profile.php",
+          data: form.serialize(),
+          success: function (data) {
+            console.log(data);
+            if (data["success"]) {
+              swal("Success!", "Profile updated!", "success");
+            } else {
+              swal("Error!", data["message"], "error");
+            }
+          },
+          error: function (err) {
+            console.log(err);
+          },
+        });
+      });
+      $("#logout").click(function () {
+        // Perform AJAX request to logout.php
+        $.ajax({
+          url: "php/logout.php",
+          method: "GET",
+          success: function (response) {
+            // Redirect to the login page after logout
+            window.location.href = "index.html";
+          },
+          error: function (xhr, status, error) {
+            // Handle errors
+            console.log("Logout error:", error);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GUVI</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="fonts/iconic/css/material-design-iconic-font.min.css"
+    />
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <!--===============================================================================================-->
+  </head>
+
+  <body>
+    <div class="limiter">
+      <div
+        class="container-login100"
+        style="
+          background: #ddd6f3; /* fallback for old browsers */
+          background: -webkit-linear-gradient(
+            to right,
+            #faaca8,
+            #ddd6f3
+          ); /* Chrome 10-25, Safari 5.1-6 */
+          background: linear-gradient(to right, #faaca8, #ddd6f3);
+        "
+      >
+        <div class="wrap-login100">
+          <form class="login100-form validate-form" id="login-form">
+            <span class="login100-form-title p-b-26"> Welcome</span>
+            <span class="login100-form-title p-b-1">
+              <img src="images/icons/ytimg.jpg" class="h-50 w-50" />
+            </span>
+
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Valid email is: a@b.c"
+            >
+              <input required class="input100" type="text" name="username" />
+              <span class="focus-input100" data-placeholder="Email"></span>
+            </div>
+
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Enter password"
+            >
+              <span class="btn-show-pass">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  id="eye-show"
+                  style="height: 24px; width: 24px"
+                  class=""
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  style="height: 24px; width: 24px"
+                  class="d-none"
+                  id="eye-slash"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                  />
+                </svg>
+              </span>
+
+              <input
+                required
+                class="input100"
+                type="password"
+                name="password"
+              />
+              <span class="focus-input100" data-placeholder="Password"></span>
+            </div>
+
+            <div class="container-login100-form-btn">
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn">Login</button>
+              </div>
+            </div>
+
+            <div class="text-center p-t-115">
+              <span class="txt1"> Don’t have an account? </span>
+
+              <a class="txt2" href="register.html"> Sign Up </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="js/main.js"></script>
+    <script>
+      // check if user is logged in or not
+      $.ajax({
+        type: "GET",
+        url: "php/auth.php",
+        success: function (data) {
+          window.location.href = "dashboard.html";
+        },
+      });
+      $("#login-form").submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+          type: "POST",
+          url: "php/login.php",
+          data: form.serialize(), // serializes the form's elements.
+          success: function (data) {
+            console.log(data);
+            if (data["success"]) {
+              swal({
+                icon: "success",
+                title: "Success",
+                text: "Login Successful",
+              }).then(function () {
+                window.location.href = "dashboard.html";
+              });
+            } else {
+              alert("Invalid Credentials");
+            }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
